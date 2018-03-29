@@ -4,7 +4,8 @@
   "description": "iView log crawler",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
@@ -15,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/yellowb/iview-log-crawler/issues"
   },
-  "homepage": "https://github.com/yellowb/iview-log-crawler#readme"
+  "homepage": "https://github.com/yellowb/iview-log-crawler#readme",
+  "dependencies": {
+    "winston": "3.0.0-rc3"
+  }
 }
