@@ -1,3 +1,7 @@
-const logger = require('./logger');
+const logger = require('./logger').logger;
 
-logger.info('sss')
+if (!process.env.NODE_ENV) {
+    process.env.NODE_ENV = 'development';
+}
+
+logger.info('NODE_ENV: ' + process.env.NODE_ENV);
