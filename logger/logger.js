@@ -6,24 +6,34 @@ const moment = require('moment-timezone');
 const {createLogger, format, transports} = require('winston');
 const {combine, printf} = format;
 
-const appDir = path.resolve(__dirname, '../');
-const errorLogFilename = path.join(appDir, 'error.log');
-const combinedLogFilename = path.join(appDir, 'combined.log');
+const config = require('../config');
+
+const appDir = path.resolve(__dirname, '..');
+const logFileDir = path.join(appDir, 'logs');
+
+const errorLogFilename = path.join(logFileDir, 'error.log');
+const combinedLogFilename = path.join(logFileDir, 'combined.log');
 
 const myFormat = printf(info => {
     return `[${info.timestamp}][${info.level}]: ${info.message}`;
 });
 
 const appendTimestamp = format((info, opts) => {
-    if (opts.tz)
+    if (opts.tz) {
         info.timestamp = moment().tz(opts.tz).format();
+    }
     return info;
 });
+
 
 //
 // Remove the file, ignoring any errors
 //
 try {
+    if (!fs.existsSync(logFileDir)) {
+        fs.mkdirSync(logFileDir, (err) => { /* no-op */
+        });
+    }
     fs.unlinkSync(errorLogFilename);
     fs.unlinkSync(combinedLogFilename);
 }
@@ -32,7 +42,7 @@ catch (ex) {
 
 const logger = createLogger({
     format: combine(
-        appendTimestamp({ tz: 'Asia/Hongkong' }),
+        appendTimestamp({tz: 'Asia/Hong_Kong'}),
         myFormat
     ),
     transports: [
