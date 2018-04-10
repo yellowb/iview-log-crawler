@@ -1,6 +1,8 @@
 const path = require('path');
 const puppeteer = require('puppeteer');
 
+const config = require('../config')
+
 // iView homepage
 const url = 'http://i2isd/sites/isdc_ZHA/CDRIVE/Support%20Document/iview/iview_prd.htm';
 
@@ -42,15 +44,14 @@ let scrape = async () => {
         return 0;
     }
 
-    const appDir = path.resolve(__dirname, '..');
 
     // Open a new page using the content iframe's url
     console.log('Open a new page using the url of content iframe.');
     let contentUrl = contentFrame.url();
     let contentPage = await browser.newPage();
     // walkaround that allow the headless chrome to download files
-    await contentPage._client.send('Page.setDownloadBehavior', {behavior: 'allow', downloadPath: appDir});
-    await contentPage.setViewport({width: 1000, height: 800})
+    await contentPage._client.send('Page.setDownloadBehavior', {behavior: 'allow', downloadPath: config.downloadedFileDir});
+    await contentPage.setViewport({width: 1000, height: 800});
     await contentPage.goto(contentUrl);
     await contentPage.waitFor(2000);
     // Go into a folder
@@ -58,11 +59,11 @@ let scrape = async () => {
     await contentPage.click('body > table:nth-child(3) > tbody > tr:nth-child(4) > td > div > table > tbody > tr:nth-child(13) > td:nth-child(4) > p > a');
     await contentPage.waitFor(1000);
     // Click the download link
-    console.log('Try to download a file.')
+    console.log('Try to download a file.');
     await contentPage.click('body > table:nth-child(3) > tbody > tr:nth-child(4) > td > div > table > tbody > tr:nth-child(2) > td:nth-child(4) > p > a:nth-child(3)');
     await contentPage.waitFor(10000);
 
-    // If no error, the file will be download to the root of this project folder
+    // If no error, the file will be downloaded.
 
     console.log('Finished!');
     await browser.close();
