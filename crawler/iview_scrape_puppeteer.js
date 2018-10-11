@@ -8,7 +8,7 @@ const url = 'http://i2isd/sites/isdc_ZHA/CDRIVE/Support%20Document/iview/iview_p
 
 let scrape = async () => {
     console.log('Opening headless chrome.');
-    const browser = await puppeteer.launch({headless: true});   // set to false to view the chrome behavior
+    const browser = await puppeteer.launch({headless: false});   // set to false to view the chrome behavior
     const page = await browser.newPage();
     await page.setViewport({width: 1000, height: 800})
 
